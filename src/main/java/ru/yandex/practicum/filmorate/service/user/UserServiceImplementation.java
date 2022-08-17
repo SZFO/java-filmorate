@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -20,22 +19,18 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public Collection<User> findAll() {
+    public List<User> findAll() {
         return userStorage.findAll();
     }
 
     @Override
-    public Optional<User> create(User user) {
-        userStorage.create(user);
-        log.info("Добавлен пользователь: {}", user);
-        return Optional.of(user);
+    public User create(User user) {
+        return userStorage.create(user);
     }
 
     @Override
     public User updateUser(User user) {
-        User result = userStorage.updateUser(user);
-        log.info("Обновлены данные пользователя: {}", user);
-        return result;
+        return userStorage.updateUser(user);
     }
 
     @Override
@@ -45,7 +40,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public Optional<User> findById(int id) {
+    public User findById(int id) {
         return userStorage.findById(id);
     }
 
@@ -62,17 +57,17 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public Collection<User> getFriends(int id) {
-        Collection<User> result = userStorage.getFriends(id);
+    public List<User> getFriends(int id) {
+        List<User> result = userStorage.getFriends(id);
         log.info(String.format("Получен список друзей пользователя с ID = %s", id));
         return result;
     }
 
     @Override
-    public Collection<User> getCommonFriends(int id, int otherId) {
-        Collection<User> result = userStorage.getCommonFriends(id, otherId);
-        log.info(String.format("Получен список общих друзей пользователя с ID = %s и " +
-                "пользователя с ID = %s", id, otherId));
+    public List<User> getCommonFriends(int id, int otherId) {
+        List<User> result = userStorage.getCommonFriends(id, otherId);
+        log.info(String.format("Получен список общих друзей пользователя с ID = %s и " + "пользователя с ID = %s",
+                id, otherId));
         return result;
     }
 }

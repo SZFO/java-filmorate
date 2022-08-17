@@ -2,9 +2,8 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.DuplicateFilmFoundException;
-import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exception.DuplicateFoundException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.*;
@@ -13,30 +12,35 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
-    private int filmId = 0;
+    private int filmId = 1;
     private final Map<Integer, Film> films = new HashMap<>();
 
     @Override
-    public Collection<Film> findAll() {
+    public List<Film> findAll() {
         log.info("Текущее количество фильмов : {}", films.size());
-        return films.values();
+        return new ArrayList<>(films.values());
     }
 
     @Override
-    public Optional<Film> create(Film film) {
-        film.setId(++filmId);
-        if (!films.containsKey(film.getId())) {
-            return Optional.ofNullable(films.put(film.getId(), film));
-        } else throw new DuplicateFilmFoundException(String.format("Фильм с id %s уже существует.", film.getId()));
+    public Film create(Film film) {
+        if (films.containsKey(film.getId())) {
+            throw new DuplicateFoundException(String.format("Фильм с id %s уже существует.", film.getId()));
+        } else {
+            film.setId(filmId++);
+            films.put(film.getId(), film);
+            log.info("Добавлен фильм: {}", film);
+            return film;
+        }
     }
 
     @Override
     public Film updateFilm(Film film) {
         if (!films.containsKey(film.getId())) {
             log.warn("Ошибка обновления фильма: " + film.getName());
-            throw new FilmNotFoundException("Некорректно указан id у фильма: " + film.getName());
+            throw new NotFoundException("Некорректно указан id у фильма: " + film.getName());
         }
         films.put(film.getId(), film);
+        log.info("Обновлен фильм: {}", film);
         return film;
     }
 
@@ -44,30 +48,30 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void deleteFilm(int id) {
         if (!films.containsKey(id)) {
             log.warn("Ошибка удаления фильма по id");
-            throw new FilmNotFoundException(String.format("Фильм с id %s отсутствует в базе данных.", id));
+            throw new NotFoundException(String.format("Фильм с id %s отсутствует в базе данных.", id));
         }
         films.remove(id);
     }
 
     @Override
-    public Optional<Film> findById(int id) {
-        if (!films.containsKey(id)) {
-            log.warn("Ошибка поиска фильма по id");
-            throw new FilmNotFoundException(String.format("Фильм с id %s отсутствует в базе данных.", id));
-        }
-        return Optional.of(films.get(id));
+    public Film findById(int id) {
+        return Optional.ofNullable(films.get(id))
+                .orElseThrow(() -> {
+                    log.warn("Ошибка поиска фильма по id");
+                    throw new NotFoundException(String.format("Фильм с id %s отсутствует в базе данных.", id));
+                });
     }
 
     @Override
     public void addLike(int filmId, int userId) {
         if (!films.containsKey(filmId)) {
             log.warn("Ошибка добавления лайка к фильму по его id.");
-            throw new FilmNotFoundException(String.format("Проверьте корректность ввода ID = %s фильма и " +
+            throw new NotFoundException(String.format("Проверьте корректность ввода ID = %s фильма и " +
                     "ID = %s пользователя", filmId, userId));
         }
         if (userId < 1) {
             log.warn("ID пользователя должен быть равен или больше 1.");
-            throw new UserNotFoundException(String.format("ID пользователя должен быть равен или " +
+            throw new NotFoundException(String.format("ID пользователя должен быть равен или " +
                     "больше 1. Введенный ID = %s", userId));
         }
         films.get(filmId).addLike(userId);
@@ -77,19 +81,19 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void deleteLike(int filmId, int userId) {
         if (!films.containsKey(filmId)) {
             log.warn("Ошибка удаления лайка у фильма по его id.");
-            throw new FilmNotFoundException(String.format("Проверьте корректность ввода ID = %s фильма и " +
+            throw new NotFoundException(String.format("Проверьте корректность ввода ID = %s фильма и " +
                     "ID = %s пользователя", filmId, userId));
         }
         if (userId < 1) {
             log.warn("ID пользователя должен быть равен или больше 1.");
-            throw new UserNotFoundException(String.format("ID пользователя должен быть равен или " +
+            throw new NotFoundException(String.format("ID пользователя должен быть равен или " +
                     "больше 1. Введенный ID = %s", userId));
         }
         films.get(filmId).deleteLike(userId);
     }
 
     @Override
-    public Collection<Film> getPopular(int count) {
+    public List<Film> getPopular(int count) {
         return films.values().stream()
                 .sorted(Comparator.comparingInt((Film x) -> x.getLikes().size()).reversed())
                 .limit(count)

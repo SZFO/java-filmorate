@@ -7,8 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.validator.FilmReleaseDateValidator;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,24 +22,20 @@ public class FilmServiceImplementation implements FilmService {
     }
 
     @Override
-    public Collection<Film> findAll() {
+    public List<Film> findAll() {
         return filmStorage.findAll();
     }
 
     @Override
-    public Optional<Film> create(Film film) {
+    public Film create(Film film) {
         filmReleaseDateValidator.validate(film);
-        filmStorage.create(film);
-        log.info("Добавлен фильм: {}", film);
-        return Optional.of(film);
+        return filmStorage.create(film);
     }
 
     @Override
     public Film updateFilm(Film film) {
         filmReleaseDateValidator.validate(film);
-        Film result = filmStorage.updateFilm(film);
-        log.info("Обновлен фильм: {}", film);
-        return result;
+        return filmStorage.updateFilm(film);
     }
 
     @Override
@@ -50,7 +45,7 @@ public class FilmServiceImplementation implements FilmService {
     }
 
     @Override
-    public Optional<Film> findById(int id) {
+    public Film findById(int id) {
         return filmStorage.findById(id);
     }
 
@@ -67,8 +62,8 @@ public class FilmServiceImplementation implements FilmService {
     }
 
     @Override
-    public Collection<Film> getPopular(int count) {
-        Collection<Film> result = filmStorage.getPopular(count);
+    public List<Film> getPopular(int count) {
+        List<Film> result = filmStorage.getPopular(count);
         log.info(String.format("Вывод первых %s фильмов по количеству лайков.", count));
         return result;
     }

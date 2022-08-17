@@ -7,8 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.film.FilmService;
 
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,12 +21,12 @@ public class FilmController {
     }
 
     @GetMapping
-    public Collection<Film> findAll() {
+    public List<Film> findAll() {
         return filmService.findAll();
     }
 
     @PostMapping
-    public Optional<Film> create(@Valid @RequestBody Film film) {
+    public Film create(@Valid @RequestBody Film film) {
         return filmService.create(film);
     }
 
@@ -42,7 +41,7 @@ public class FilmController {
     }
 
     @GetMapping("{id}")
-    public Optional<Film> getFilm(@PathVariable int id) {
+    public Film getFilm(@PathVariable int id) {
         return filmService.findById(id);
     }
 
@@ -57,7 +56,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public Collection<Film> getPopular(@RequestParam(defaultValue = "10", name = "count") int count) {
+    public List<Film> getPopular(@RequestParam(defaultValue = "10", name = "count") int count) {
         return filmService.getPopular(count);
     }
 }
