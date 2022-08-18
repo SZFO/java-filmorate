@@ -18,6 +18,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public List<Film> findAll() {
         log.info("Текущее количество фильмов : {}", films.size());
+
         return new ArrayList<>(films.values());
     }
 
@@ -25,12 +26,13 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film create(Film film) {
         if (films.containsKey(film.getId())) {
             throw new DuplicateFoundException(String.format("Фильм с id %s уже существует.", film.getId()));
-        } else {
-            film.setId(filmId++);
-            films.put(film.getId(), film);
-            log.info("Добавлен фильм: {}", film);
-            return film;
         }
+        film.setId(filmId++);
+        films.put(film.getId(), film);
+        log.info("Добавлен фильм: {}", film);
+
+        return film;
+
     }
 
     @Override
@@ -41,6 +43,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
         films.put(film.getId(), film);
         log.info("Обновлен фильм: {}", film);
+
         return film;
     }
 

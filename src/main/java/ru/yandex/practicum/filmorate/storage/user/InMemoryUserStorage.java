@@ -19,6 +19,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public List<User> findAll() {
         log.info("Текущее количество пользователей : {}", users.size());
+
         return new ArrayList<>(users.values());
     }
 
@@ -26,12 +27,13 @@ public class InMemoryUserStorage implements UserStorage {
     public User create(User user) {
         if (users.containsKey(user.getId())) {
             throw new DuplicateFoundException(String.format("Пользователь с id %s уже существует.", user.getId()));
-        } else {
-            user.setId(userId++);
-            users.put(user.getId(), user);
-            log.info("Добавлен пользователь: {}", user);
-            return user;
         }
+        user.setId(userId++);
+        users.put(user.getId(), user);
+        log.info("Добавлен пользователь: {}", user);
+
+        return user;
+
     }
 
     @Override
@@ -42,6 +44,7 @@ public class InMemoryUserStorage implements UserStorage {
         }
         users.put(user.getId(), user);
         log.info("Обновлены данные пользователя: {}", user);
+
         return user;
     }
 
