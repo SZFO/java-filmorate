@@ -1,7 +1,10 @@
 package ru.yandex.practicum.filmorate.exception;
 
-public class NotFoundException extends RuntimeException {
-    public NotFoundException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+public class NotFoundException extends ResponseStatusException {
+    public NotFoundException(HttpStatus httpStatus, String message) {
+        super(httpStatus, message);
     }
 }

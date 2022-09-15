@@ -4,17 +4,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
 
-public interface UserStorage {
-    List<User> findAll();
-
-    User create(User user);
-
-    User updateUser(User user);
-
-    void deleteUser(int id);
-
-    User findById(int id);
-
+public interface FriendStorageDao {
     void addFriend(int id, int friendId);
 
     void deleteFriend(int id, int friendId);
