@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FilmStorageDao {
-    List<Film> findAll();
+    List<Film> getAll();
 
     Film create(Film film);
 
-    Optional<Film> updateFilm(Film film);
+    Optional<Film> update(Film film);
 
-    void deleteFilm(int id);
+    void delete(int id);
 
-    Optional<Film> findById(int id);
+    Optional<Film> getById(int id);
 
     List<Film> getPopular(int count);
 }

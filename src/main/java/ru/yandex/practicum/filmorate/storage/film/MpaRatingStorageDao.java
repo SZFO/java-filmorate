@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MpaRatingStorageDao {
-    List<MpaRating> findAll();
+    List<MpaRating> getAll();
 
-    Optional<MpaRating> findById(int id);
+    Optional<MpaRating> getById(int id);
 }

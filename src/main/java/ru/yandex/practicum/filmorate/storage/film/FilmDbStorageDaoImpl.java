@@ -22,7 +22,7 @@ public class FilmDbStorageDaoImpl implements FilmStorageDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Film> findAll() {
+    public List<Film> getAll() {
         String sql = "SELECT f.id, f.name, f.description, f.release_date, f.duration, mr.mpa_id, mr.mpa_name " +
                 "FROM films AS f JOIN mpa_ratings AS mr ON f.mpa_rating_id = mr.mpa_id";
 
@@ -51,7 +51,7 @@ public class FilmDbStorageDaoImpl implements FilmStorageDao {
     }
 
     @Override
-    public Optional<Film> updateFilm(Film film) {
+    public Optional<Film> update(Film film) {
         String sql = "UPDATE films SET name = ?, description = ?, release_date = ?, " +
                 "duration = ?, mpa_rating_id = ? WHERE id = ?";
 
@@ -61,13 +61,13 @@ public class FilmDbStorageDaoImpl implements FilmStorageDao {
     }
 
     @Override
-    public void deleteFilm(int id) {
+    public void delete(int id) {
         String sql = "DELETE FROM films WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
 
     @Override
-    public Optional<Film> findById(int id) {
+    public Optional<Film> getById(int id) {
         String sql = "SELECT f.id, f.name, f.description, f.release_date, f.duration, mr.mpa_id, mr.mpa_name " +
                 "FROM films AS f JOIN mpa_ratings AS mr ON f.mpa_rating_id = mr.mpa_id WHERE f.id = ?";
         List<Film> films = jdbcTemplate.query(sql, new FilmMapper(), id);

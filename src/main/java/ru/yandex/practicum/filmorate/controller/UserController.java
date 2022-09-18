@@ -21,9 +21,9 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> findAll() {
+    public List<User> getAll() {
         log.info("Вывод списка всех пользователей.");
-        return userService.findAll();
+        return userService.getAll();
     }
 
     @PostMapping
@@ -33,21 +33,21 @@ public class UserController {
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user) {
+    public User update(@Valid @RequestBody User user) {
         log.info("Обновление данных пользователя.");
-        return userService.updateUser(user);
+        return userService.update(user);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable int id) {
-        userService.deleteUser(id);
+    public void delete(@PathVariable int id) {
+        userService.delete(id);
         log.info(String.format("Удален пользователь с ID = %s.", id));
     }
 
     @GetMapping("{id}")
-    public User getUser(@PathVariable int id) {
+    public User getById(@PathVariable int id) {
         log.info("Получение пользователя по его ID.");
-        return userService.findById(id);
+        return userService.getById(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")

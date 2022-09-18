@@ -23,14 +23,14 @@ public class MpaRatingController {
     }
 
     @GetMapping
-    public List<MpaRating> findAll() {
+    public List<MpaRating> getAll() {
         log.info("Вывод списка всех рейтингов.");
-        return mpaRatingService.findAll();
+        return mpaRatingService.getAll();
     }
 
     @GetMapping("{id}")
-    public MpaRating getMpa(@PathVariable int id) {
+    public MpaRating getById(@PathVariable int id) {
         log.info("Получение рейтинга по его ID.");
-        return mpaRatingService.findById(id);
+        return mpaRatingService.getById(id);
     }
 }

@@ -19,14 +19,14 @@ public class MpaRatingDbStorageDaoImpl implements MpaRatingStorageDao {
     }
 
     @Override
-    public List<MpaRating> findAll() {
+    public List<MpaRating> getAll() {
         String sql = "SELECT * FROM mpa_ratings";
 
         return jdbcTemplate.query(sql, new MpaMapper());
     }
 
     @Override
-    public Optional<MpaRating> findById(int id) {
+    public Optional<MpaRating> getById(int id) {
         String sql = "SELECT * FROM mpa_ratings WHERE mpa_id = ?";
         List<MpaRating> ratings = jdbcTemplate.query(sql, new MpaMapper(), id);
 

@@ -7,6 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Friendship {
     private int userId;
+
     private int friendId;
+
     private boolean status;
 }

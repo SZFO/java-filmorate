@@ -22,14 +22,14 @@ public class GenreDbStorageDaoImpl implements GenreStorageDao {
     }
 
     @Override
-    public List<Genre> findAll() {
+    public List<Genre> getAll() {
         String sql = "SELECT * FROM genres";
 
         return jdbcTemplate.query(sql, new GenreMapper());
     }
 
     @Override
-    public Optional<Genre> findById(int id) {
+    public Optional<Genre> getById(int id) {
         String sql = "SELECT * FROM genres WHERE genre_id = ?";
         List<Genre> genres = jdbcTemplate.query(sql, new GenreMapper(), id);
 
@@ -37,7 +37,7 @@ public class GenreDbStorageDaoImpl implements GenreStorageDao {
     }
 
     @Override
-    public void setFilmGenre(Film film) {
+    public void set(Film film) {
         if (film.getGenres() == null) {
             return;
         }
@@ -48,7 +48,7 @@ public class GenreDbStorageDaoImpl implements GenreStorageDao {
     }
 
     @Override
-    public Set<Genre> loadFilmGenre(Film film) {
+    public Set<Genre> load(Film film) {
         String sql = "SELECT g.genre_id, g.genre_name " +
                 "FROM film_genres AS fg " +
                 "JOIN genres AS G ON fg.genre_id = g.genre_id " +

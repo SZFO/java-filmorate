@@ -21,9 +21,9 @@ public class FilmController {
     }
 
     @GetMapping
-    public List<Film> findAll() {
+    public List<Film> getAll() {
         log.info("Вывод списка всех фильмов.");
-        return filmService.findAll();
+        return filmService.getAll();
     }
 
     @PostMapping
@@ -33,21 +33,21 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) {
+    public Film update(@Valid @RequestBody Film film) {
         log.info("Обновление данных фильма.");
-        return filmService.updateFilm(film);
+        return filmService.update(film);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFilm(@PathVariable int id) {
-        filmService.deleteFilm(id);
+    public void delete(@PathVariable int id) {
+        filmService.delete(id);
         log.info(String.format("Удален фильм с ID = %s.", id));
     }
 
     @GetMapping("{id}")
-    public Film getFilm(@PathVariable int id) {
+    public Film getById(@PathVariable int id) {
         log.info("Получение фильма по его ID.");
-        return filmService.findById(id);
+        return filmService.getById(id);
     }
 
     @PutMapping("/{id}/like/{userId}")

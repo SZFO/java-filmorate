@@ -24,8 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class GenreDbStorageDaoTest {
-    private final GenreStorageDao genreStorageDao;
+    private final GenreStorageDao genreStorage;
+
     private final FilmStorageDao filmStorage;
+
     private final List<Genre> genres = List.of(new Genre(1, "Комедия"),
             new Genre(2, "Драма"),
             new Genre(3, "Мультфильм"),
@@ -36,12 +38,12 @@ public class GenreDbStorageDaoTest {
 
     @Test
     void getAllGenreTest() {
-        assertEquals(genres, genreStorageDao.findAll());
+        assertEquals(genres, genreStorage.getAll());
     }
 
     @Test
     void findGenreByIdTest() {
-        assertThat(genreStorageDao.findById(5))
+        assertThat(genreStorage.getById(5))
                 .isPresent()
                 .hasValueSatisfying(genre ->
                         assertThat(genre).hasFieldOrPropertyWithValue("name", "Документальный")
@@ -57,8 +59,8 @@ public class GenreDbStorageDaoTest {
                 143, new MpaRating(3, "PG-13"),
                 Set.of(genres.get(5)));
         filmStorage.create(film1);
-        genreStorageDao.setFilmGenre(film1);
+        genreStorage.set(film1);
 
-        assertEquals(1, genreStorageDao.loadFilmGenre(film1).size());
+        assertEquals(1, genreStorage.load(film1).size());
     }
 }

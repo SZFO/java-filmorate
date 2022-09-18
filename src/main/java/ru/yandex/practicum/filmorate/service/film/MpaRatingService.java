@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.MpaRating;
 import java.util.List;
 
 public interface MpaRatingService {
-    List<MpaRating> findAll();
+    List<MpaRating> getAll();
 
-    MpaRating findById(int id);
+    MpaRating getById(int id);
 }

@@ -7,5 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class MpaRating {
     private int id;
+
     private String name;
 }

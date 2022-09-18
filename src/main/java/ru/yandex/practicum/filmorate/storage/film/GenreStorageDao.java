@@ -8,11 +8,11 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface GenreStorageDao {
-    List<Genre> findAll();
+    List<Genre> getAll();
 
-    Optional<Genre> findById(int id);
+    Optional<Genre> getById(int id);
 
-    void setFilmGenre(Film film);
+    void set(Film film);
 
-    Set<Genre> loadFilmGenre(Film film);
+    Set<Genre> load(Film film);
 }

@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MpaRatingDbStorageDaoTest {
-    private final MpaRatingStorageDao mpaRatingDao;
+    private final MpaRatingStorageDao mpaRatingStorage;
+
     private final List<MpaRating> ratings = List.of(new MpaRating(1, "G"),
             new MpaRating(2, "PG"),
             new MpaRating(3, "PG-13"),
@@ -28,12 +29,12 @@ public class MpaRatingDbStorageDaoTest {
 
     @Test
     void getAllMpaRatingTest() {
-        assertEquals(ratings, mpaRatingDao.findAll());
+        assertEquals(ratings, mpaRatingStorage.getAll());
     }
 
     @Test
     void findMpaRatingByIdTest() {
-        assertThat(mpaRatingDao.findById(3))
+        assertThat(mpaRatingStorage.getById(3))
                 .isPresent()
                 .hasValueSatisfying(mpa ->
                         assertThat(mpa).hasFieldOrPropertyWithValue("name", "PG-13")

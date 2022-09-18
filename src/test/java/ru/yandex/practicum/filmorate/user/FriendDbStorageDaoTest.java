@@ -23,11 +23,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class FriendDbStorageDaoTest {
     private final UserStorageDao userStorage;
+
     private final FriendStorageDao friendStorage;
+
     private final User user = new User(1, "Vadim", "szfo", "vadimfaustov@yandex.ru",
             LocalDate.of(1990, 8, 26));
+
     private final User friend = new User(2, "Alexey", "anonymous", "anonymous@yandex.ru",
             LocalDate.of(1987, 4, 12));
+
     private final User commonFriend = new User(3, "Vladislav", "pablo", "pablo@yahoo.com",
             LocalDate.of(1994, 11, 8));
 
@@ -39,26 +43,26 @@ public class FriendDbStorageDaoTest {
 
     @Test
     void addFriendTest() {
-        friendStorage.addFriend(user.getId(), friend.getId());
+        friendStorage.add(user.getId(), friend.getId());
 
-        assertEquals(List.of(friend), friendStorage.getFriends(user.getId()));
+        assertEquals(List.of(friend), friendStorage.getById(user.getId()));
     }
 
     @Test
     void deleteFriendTest() {
-        friendStorage.addFriend(user.getId(), friend.getId());
-        friendStorage.deleteFriend(user.getId(), friend.getId());
+        friendStorage.add(user.getId(), friend.getId());
+        friendStorage.delete(user.getId(), friend.getId());
 
-        assertEquals(Collections.emptyList(), friendStorage.getFriends(user.getId()));
+        assertEquals(Collections.emptyList(), friendStorage.getById(user.getId()));
 
     }
 
     @Test
     void getCommonFriendsTest() {
         userStorage.create(commonFriend);
-        friendStorage.addFriend(user.getId(), commonFriend.getId());
-        friendStorage.addFriend(friend.getId(), commonFriend.getId());
+        friendStorage.add(user.getId(), commonFriend.getId());
+        friendStorage.add(friend.getId(), commonFriend.getId());
 
-        assertEquals(List.of(commonFriend), friendStorage.getCommonFriends(user.getId(), friend.getId()));
+        assertEquals(List.of(commonFriend), friendStorage.getCommon(user.getId(), friend.getId()));
     }
 }

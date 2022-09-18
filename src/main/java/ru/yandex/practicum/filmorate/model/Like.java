@@ -7,5 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class Like {
     private Film film;
+
     private User user;
 }

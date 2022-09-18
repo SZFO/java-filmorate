@@ -1,23 +1,23 @@
 DROP TABLE IF EXISTS mpa_ratings CASCADE; -- удаляем таблицу перед созданием для тестов Postman
 CREATE TABLE IF NOT EXISTS mpa_ratings
 (
-    mpa_id INT auto_increment PRIMARY KEY,
+    mpa_id    INT auto_increment    PRIMARY KEY,
     mpa_name  VARCHAR(255)          NOT NULL
 );
 DROP TABLE IF EXISTS genres CASCADE; -- удаляем таблицу перед созданием для тестов Postman
 CREATE TABLE IF NOT EXISTS genres
 (
-    genre_id INT auto_increment PRIMARY KEY,
+    genre_id      INT auto_increment    PRIMARY KEY,
     genre_name    VARCHAR(255)          NOT NULL
 );
 DROP TABLE IF EXISTS films CASCADE; -- удаляем таблицу перед созданием для тестов Postman
 CREATE TABLE IF NOT EXISTS films
 (
-    id      INT auto_increment PRIMARY KEY,
-    name         VARCHAR(255)          NOT NULL,
-    description  VARCHAR(255)          NOT NULL,
-    release_date DATE                  NOT NULL,
-    duration     INT                   NOT NULL,
+    id              INT auto_increment    PRIMARY KEY,
+    name            VARCHAR(255)          NOT NULL,
+    description     VARCHAR(255)          NOT NULL,
+    release_date    DATE                  NOT NULL,
+    duration        INT                   NOT NULL,
     mpa_rating_id   INT,
     FOREIGN KEY (mpa_rating_id) REFERENCES mpa_ratings (mpa_id) ON DELETE SET NULL
 );
@@ -33,9 +33,9 @@ CREATE TABLE IF NOT EXISTS film_genres
 DROP TABLE IF EXISTS users CASCADE; -- удаляем таблицу перед созданием для тестов Postman
 CREATE TABLE IF NOT EXISTS users
 (
-    id  INT auto_increment PRIMARY KEY,
-    login     VARCHAR(255)          NOT NULL,
-    name    VARCHAR(255)          NOT NULL UNIQUE,
+    id       INT auto_increment    PRIMARY KEY,
+    login    VARCHAR(255)          NOT NULL,
+    name     VARCHAR(255)          NOT NULL UNIQUE,
     email    VARCHAR(255)          NOT NULL UNIQUE,
     birthday DATE                  NOT NULL
 );
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS users
 DROP TABLE IF EXISTS friendships CASCADE; -- удаляем таблицу перед созданием для тестов Postman
 CREATE TABLE IF NOT EXISTS friendships
 (
-    id  INT auto_increment PRIMARY KEY,
+    id        INT auto_increment PRIMARY KEY,
     user_id   INT NOT NULL,
     friend_id INT NOT NULL,
     status BOOLEAN NOT NULL DEFAULT 0,

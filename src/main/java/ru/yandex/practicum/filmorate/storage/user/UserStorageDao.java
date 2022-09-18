@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserStorageDao {
-    List<User> findAll();
+    List<User> getAll();
 
     User create(User user);
 
-    Optional<User> updateUser(User user);
+    Optional<User> update(User user);
 
-    void deleteUser(int id);
+    void delete(int id);
 
-    Optional<User> findById(int id);
+    Optional<User> getById(int id);
 }

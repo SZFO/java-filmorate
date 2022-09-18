@@ -26,10 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class LikeDbStorageDaoTest {
     private final LikeStorageDao likeStorage;
+
     private final UserStorageDao userStorage;
+
     private final FilmStorageDao filmStorage;
+
     private final User user1 = new User(1, "Vadim", "szfo", "vadimfaustov@yandex.ru",
             LocalDate.of(1990, 8, 26));
+
     private final Film film1 = new Film(1, "Пираты Карибского моря: Проклятие Черной жемчужины",
             "Пират нападает на армию мертвецов, чтобы вернуть свой корабль. " +
                     "Боевик о первых приключениях Джека Воробья",
@@ -41,18 +45,18 @@ public class LikeDbStorageDaoTest {
     public void createUserAndFilmWithLike() {
         userStorage.create(user1);
         filmStorage.create(film1);
-        likeStorage.addLike(film1.getId(), user1.getId());
+        likeStorage.add(film1.getId(), user1.getId());
     }
 
     @Test
     void addLike() {
-        assertEquals(1, likeStorage.getLikes(film1.getId(), user1.getId()).size());
+        assertEquals(1, likeStorage.get(film1.getId(), user1.getId()).size());
     }
 
     @Test
     void deleteLike() {
-        likeStorage.deleteLike(film1.getId(), user1.getId());
+        likeStorage.delete(film1.getId(), user1.getId());
 
-        assertTrue(likeStorage.getLikes(film1.getId(), user1.getId()).isEmpty());
+        assertTrue(likeStorage.get(film1.getId(), user1.getId()).isEmpty());
     }
 }

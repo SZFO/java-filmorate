@@ -16,19 +16,19 @@ public class FriendDbStorageDaoImpl implements FriendStorageDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void addFriend(int id, int friendId) {
+    public void add(int id, int friendId) {
         String sql = "INSERT INTO friendships (user_id, friend_id, status) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, id, friendId, 1);
     }
 
     @Override
-    public void deleteFriend(int id, int friendId) {
+    public void delete(int id, int friendId) {
         String sql = "DELETE FROM friendships WHERE user_id = ? AND friend_id = ?";
         jdbcTemplate.update(sql, id, friendId);
     }
 
     @Override
-    public List<User> getFriends(int id) {
+    public List<User> getById(int id) {
         String sql = "SELECT u.* FROM users AS u WHERE u.id IN " +
                 "(SELECT f.friend_id FROM friendships AS f WHERE f.user_id = ? AND f.status = TRUE)";
 
@@ -36,7 +36,7 @@ public class FriendDbStorageDaoImpl implements FriendStorageDao {
     }
 
     @Override
-    public List<User> getCommonFriends(int id, int otherId) {
+    public List<User> getCommon(int id, int otherId) {
         String sql = "SELECT  u.* " +
                 "FROM friendships AS fs " +
                 "JOIN users AS u ON fs.friend_id = u.id " +

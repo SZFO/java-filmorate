@@ -28,14 +28,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class FilmDbStorageDaoTest {
     private final FilmStorageDao filmStorage;
+
     private final LikeStorageDao likeStorage;
+
     private final UserStorageDao userStorage;
+
     private final Film film1 = new Film(1, "Пираты Карибского моря: Проклятие Черной жемчужины",
             "Пират нападает на армию мертвецов, чтобы вернуть свой корабль. " +
                     "Боевик о первых приключениях Джека Воробья",
             LocalDate.of(2003, 8, 22),
             143, new MpaRating(3, "PG-13"),
             new HashSet<>());
+
     private final Film film2 = new Film(2, "Побег из Шоушенка",
             "Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника. " +
                     "Оказавшись в тюрьме под названием Шоушенк, он сталкивается с жестокостью и беззаконием",
@@ -46,21 +50,21 @@ public class FilmDbStorageDaoTest {
 
     @Test
     void getAllIfEmptyFilmsTest() {
-        assertEquals(Collections.EMPTY_LIST, new ArrayList<>(filmStorage.findAll()));
+        assertEquals(Collections.EMPTY_LIST, new ArrayList<>(filmStorage.getAll()));
     }
 
     @Test
     void createFilmTest() {
         Film testFilm = filmStorage.create(film1);
 
-        assertEquals(testFilm, filmStorage.findById(testFilm.getId()).get());
+        assertEquals(testFilm, filmStorage.getById(testFilm.getId()).get());
     }
 
     @Test
     void findFilmByIdTest() {
         filmStorage.create(film1);
 
-        assertThat(filmStorage.findById(1))
+        assertThat(filmStorage.getById(1))
                 .isPresent()
                 .hasValueSatisfying(film ->
                         assertThat(film).hasFieldOrPropertyWithValue("name",
@@ -73,7 +77,7 @@ public class FilmDbStorageDaoTest {
         filmStorage.create(film1);
         filmStorage.create(film2);
 
-        assertEquals(List.of(film1, film2), filmStorage.findAll());
+        assertEquals(List.of(film1, film2), filmStorage.getAll());
     }
 
     @Test
@@ -86,9 +90,9 @@ public class FilmDbStorageDaoTest {
                 LocalDate.of(2003, 8, 22),
                 143, new MpaRating(3, "PG-13"),
                 new HashSet<>());
-        filmStorage.updateFilm(updatedFilm);
+        filmStorage.update(updatedFilm);
 
-        assertThat(filmStorage.findById(1))
+        assertThat(filmStorage.getById(1))
                 .isPresent()
                 .hasValueSatisfying(user1 ->
                         assertThat(user1).hasFieldOrPropertyWithValue("description",
@@ -99,9 +103,9 @@ public class FilmDbStorageDaoTest {
     void deleteFilmTest() {
         filmStorage.create(film1);
         filmStorage.create(film2);
-        filmStorage.deleteFilm(film1.getId());
+        filmStorage.delete(film1.getId());
 
-        assertEquals(List.of(film2), filmStorage.findAll());
+        assertEquals(List.of(film2), filmStorage.getAll());
     }
 
     @Test
@@ -116,8 +120,8 @@ public class FilmDbStorageDaoTest {
         userStorage.create(user2);
         filmStorage.create(film1);
         filmStorage.create(film2);
-        likeStorage.addLike(film2.getId(), user1.getId());
-        likeStorage.addLike(film2.getId(), user2.getId());
+        likeStorage.add(film2.getId(), user1.getId());
+        likeStorage.add(film2.getId(), user2.getId());
 
         assertEquals(List.of(film2), filmStorage.getPopular(1));
     }
