@@ -29,9 +29,7 @@ public class FilmServiceImpl implements FilmService {
     public List<Film> getAll() {
         List<Film> films = filmStorage.getAll();
 
-        return films.stream()
-                .peek(a -> a.setGenres(genreStorage.load(a)))
-                .collect(Collectors.toList());
+        return films.stream().peek(a -> a.setGenres(genreStorage.load(a))).collect(Collectors.toList());
     }
 
     @Override
@@ -47,8 +45,8 @@ public class FilmServiceImpl implements FilmService {
     @Override
     public Film update(Film film) {
         filmReleaseDateValidator.validate(film);
-        Film result = filmStorage.update(film)
-                .orElseThrow(() -> new NotFoundException(String.format("Фильм с id = %s не найден.", film.getId())));
+        Film result = filmStorage.update(film).orElseThrow(() ->
+                new NotFoundException(String.format("Фильм с id = %s не найден.", film.getId())));
         genreStorage.set(film);
         film.setGenres(genreStorage.load(film));
 
@@ -62,11 +60,10 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public Film getById(int id) {
-        Film result = filmStorage.getById(id)
-                .orElseThrow(() -> {
-                    log.warn("Ошибка поиска фильма по id");
-                    throw new NotFoundException(String.format("Фильм с ID %d не найден", id));
-                });
+        Film result = filmStorage.getById(id).orElseThrow(() -> {
+            log.warn("Ошибка поиска фильма по id");
+            throw new NotFoundException(String.format("Фильм с ID %d не найден", id));
+        });
         result.setGenres(genreStorage.load(result));
 
         return result;
@@ -77,7 +74,7 @@ public class FilmServiceImpl implements FilmService {
         if (!likeDbStorage.add(filmId, userId)) {
             log.warn("Ошибка добавления лайка к фильму по его id.");
             throw new NotFoundException(String.format("Проверьте корректность ввода ID = %s фильма и " +
-                            "ID = %s пользователя", filmId, userId));
+                    "ID = %s пользователя", filmId, userId));
         }
     }
 
@@ -86,7 +83,7 @@ public class FilmServiceImpl implements FilmService {
         if (!likeDbStorage.delete(filmId, userId)) {
             log.warn("Ошибка удаления лайка у фильма по его id.");
             throw new NotFoundException(String.format("Проверьте корректность ввода ID = %s фильма и " +
-                            "ID = %s пользователя", filmId, userId));
+                    "ID = %s пользователя", filmId, userId));
         }
     }
 
