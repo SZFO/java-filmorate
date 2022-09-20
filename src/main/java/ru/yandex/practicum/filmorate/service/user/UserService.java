@@ -5,15 +5,15 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> findAll();
+    List<User> getAll();
 
     User create(User user);
 
-    User updateUser(User user);
+    User update(User user);
 
-    void deleteUser(int id);
+    void delete(int id);
 
-    User findById(int id);
+    User getById(int id);
 
     void addFriend(int id, int friendId);
 

@@ -5,10 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Friendship {
-    private int userId;
+public class Like {
+    private Film film;
 
-    private int friendId;
-
-    private boolean status;
+    private User user;
 }
